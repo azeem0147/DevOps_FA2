@@ -1,0 +1,58 @@
+services:
+  backend:
+    build:
+      context: ./docker/backend
+      dockerfile: Dockerfile
+
+    image: campus-event-backend:development
+
+    container_name: campus-event-backend-dev
+
+    environment:
+      APP_NAME: Campus Event Management System
+      APP_ENV: DEVELOPMENT
+      APP_VERSION: 1.0.0-dev
+      LOG_LEVEL: DEBUG
+      DATABASE_PATH: /app/data/campus_events.db
+
+    volumes:
+      - campus-event-development-data:/app/data
+
+    ports:
+      - "5000:5000"
+
+    networks:
+      campus-event-development-network:
+        aliases:
+          - backend
+
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./docker/frontend
+      dockerfile: Dockerfile
+
+    image: campus-event-frontend:development
+
+    container_name: campus-event-frontend-dev
+
+    depends_on:
+      - backend
+
+    ports:
+      - "8080:80"
+
+    networks:
+      - campus-event-development-network
+
+    restart: unless-stopped
+
+volumes:
+  campus-event-development-data:
+    name: campus-event-development-data
+
+networks:
+  campus-event-development-network:
+    name: campus-event-development-network
+    driver: bridge

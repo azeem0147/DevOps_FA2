@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Multi-environment Campus Event Management System"
+    >
+
+    <title>Campus Event Management System</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div
+        id="toast"
+        class="toast"
+        role="status"
+        aria-live="polite"
+    ></div>
+
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-logo">CE</div>
+
+            <div>
+                <h1>Campus Events</h1>
+                <p>Discover, register and participate</p>
+            </div>
+        </div>
+
+        <nav>
+            <button
+                type="button"
+                class="nav-button active"
+                data-page="events"
+            >
+                Events
+            </button>
+
+            <button
+                type="button"
+                class="nav-button"
+                data-page="registrations"
+            >
+                My Registrations
+            </button>
+
+            <button
+                type="button"
+                class="nav-button"
+                data-page="manage"
+            >
+                Manage Events
+            </button>
+
+            <button
+                type="button"
+                class="nav-button"
+                data-page="system"
+            >
+                System
+            </button>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <!-- EVENTS PAGE -->
+        <section id="events-page" class="page active">
+            <div class="hero">
+                <div>
+                    <p class="small-heading">
+                        CAMPUS ENGAGEMENT PLATFORM
+                    </p>
+
+                    <h2>
+                        Find your next campus experience
+                    </h2>
+
+                    <p>
+                        Explore technical workshops, seminars,
+                        cultural activities, sports and placement events.
+                    </p>
+                </div>
+
+                <div class="environment-section">
+                    <span
+                        id="environmentBadge"
+                        class="environment-badge"
+                    >
+                        Loading environment
+                    </span>
+
+                    <span
+                        id="healthBadge"
+                        class="health-badge"
+                    >
+                        Checking backend
+                    </span>
+                </div>
+            </div>
+
+            <div class="filter-card">
+                <label for="searchInput">
+                    Search Events
+
+                    <input
+                        id="searchInput"
+                        type="search"
+                        placeholder="Search title or venue"
+                    >
+                </label>
+
+                <label for="categoryFilter">
+                    Category
+
+                    <select id="categoryFilter">
+                        <option value="">All Categories</option>
+                        <option value="Technical">Technical</option>
+                        <option value="Workshop">Workshop</option>
+                        <option value="Seminar">Seminar</option>
+                        <option value="Cultural">Cultural</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Placement">Placement</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </label>
+
+                <label for="statusFilter">
+                    Status
+
+                    <select id="statusFilter">
+                        <option value="">All Statuses</option>
+                        <option value="active">Active</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </label>
+
+                <button
+                    type="button"
+                    id="refreshEvents"
+                    class="secondary-button"
+                >
+                    Refresh
+                </button>
+            </div>
+
+            <div class="section-heading">
+                <div>
+                    <h2>Available Events</h2>
+
+                    <p id="eventSummary">
+                        Loading events...
+                    </p>
+                </div>
+            </div>
+
+            <div
+                id="eventGrid"
+                class="event-grid"
+            ></div>
+
+            <div
+                id="emptyEvents"
+                class="empty-message hidden"
+            >
+                <h3>No events found</h3>
+
+                <p>
+                    Try changing the search or filter.
+                </p>
+            </div>
+        </section>
+
+        <!-- MY REGISTRATIONS PAGE -->
+        <section id="registrations-page" class="page">
+            <div class="page-title">
+                <p class="small-heading">
+                    STUDENT SERVICES
+                </p>
+
+                <h2>My Registrations</h2>
+
+                <p>
+                    Enter your roll number to view your
+                    registration history.
+                </p>
+            </div>
+
+            <form
+                id="registrationSearchForm"
+                class="search-card"
+            >
+                <label for="registrationRollSearch">
+                    Roll Number
+
+                    <input
+                        id="registrationRollSearch"
+                        required
+                        placeholder="Example: CE001"
+                    >
+                </label>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Find Registrations
+                </button>
+            </form>
+
+            <div
+                id="registrationList"
+                class="registration-list"
+            ></div>
+        </section>
+                <!-- MANAGE EVENTS PAGE -->
+        <section id="manage-page" class="page">
+            <div class="page-title">
+                <p class="small-heading">
+                    EVENT ADMINISTRATION
+                </p>
+
+                <h2>Manage Events</h2>
+
+                <p>
+                    Create, update or delete campus events.
+                </p>
+            </div>
+
+            <div class="management-layout">
+                <form
+                    id="eventForm"
+                    class="form-card"
+                >
+                    <div class="form-header">
+                        <h3 id="eventFormHeading">
+                            Create New Event
+                        </h3>
+
+                        <button
+                            type="button"
+                            id="cancelEdit"
+                            class="text-button hidden"
+                        >
+                            Cancel Edit
+                        </button>
+                    </div>
+
+                    <input
+                        type="hidden"
+                        id="eventId"
+                    >
+
+                    <label for="eventTitle">
+                        Event Title
+
+                        <input
+                            id="eventTitle"
+                            required
+                            maxlength="100"
+                            placeholder="Enter event title"
+                        >
+                    </label>
+
+                    <label for="eventDescription">
+                        Description
+
+                        <textarea
+                            id="eventDescription"
+                            rows="4"
+                            required
+                            maxlength="500"
+                            placeholder="Enter event description"
+                        ></textarea>
+                    </label>
+
+                    <div class="form-row">
+                        <label for="eventCategory">
+                            Category
+
+                            <select
+                                id="eventCategory"
+                                required
+                            >
+                                <option value="Technical">
+                                    Technical
+                                </option>
+
+                                <option value="Workshop">
+                                    Workshop
+                                </option>
+
+                                <option value="Seminar">
+                                    Seminar
+                                </option>
+
+                                <option value="Cultural">
+                                    Cultural
+                                </option>
+
+                                <option value="Sports">
+                                    Sports
+                                </option>
+
+                                <option value="Placement">
+                                    Placement
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+                            </select>
+                        </label>
+
+                        <label for="eventDate">
+                            Event Date
+
+                            <input
+                                id="eventDate"
+                                type="date"
+                                required
+                            >
+                        </label>
+                    </div>
+
+                    <label for="eventVenue">
+                        Venue
+
+                        <input
+                            id="eventVenue"
+                            required
+                            maxlength="120"
+                            placeholder="Enter event venue"
+                        >
+                    </label>
+
+                    <div class="form-row">
+                        <label for="eventCapacity">
+                            Capacity
+
+                            <input
+                                id="eventCapacity"
+                                type="number"
+                                min="1"
+                                required
+                                placeholder="Maximum seats"
+                            >
+                        </label>
+
+                        <label for="eventStatus">
+                            Status
+
+                            <select id="eventStatus">
+                                <option value="active">
+                                    Active
+                                </option>
+
+                                <option value="completed">
+                                    Completed
+                                </option>
+
+                                <option value="cancelled">
+                                    Cancelled
+                                </option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <button
+                        type="submit"
+                        id="saveEventButton"
+                        class="primary-button full-width"
+                    >
+                        Create Event
+                    </button>
+                </form>
+
+                <div class="form-card">
+                    <div class="form-header">
+                        <h3>Existing Events</h3>
+
+                        <button
+                            type="button"
+                            id="refreshAdminEvents"
+                            class="text-button"
+                        >
+                            Refresh
+                        </button>
+                    </div>
+
+                    <div id="adminEventList">
+                        <p>Loading events...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+                <!-- SYSTEM INFORMATION PAGE -->
+        <section id="system-page" class="page">
+            <div class="page-title">
+                <p class="small-heading">
+                    DEPLOYMENT INFORMATION
+                </p>
+
+                <h2>System Information</h2>
+
+                <p>
+                    Runtime and environment details returned
+                    by the backend container.
+                </p>
+            </div>
+
+            <div
+                id="systemInformation"
+                class="system-grid"
+            ></div>
+
+            <div class="architecture-card">
+                <h3>Application Architecture</h3>
+
+                <div class="architecture">
+                    <div>
+                        <strong>Browser</strong>
+                        <span>User Interface</span>
+                    </div>
+
+                    <b>&rarr;</b>
+
+                    <div>
+                        <strong>Frontend</strong>
+                        <span>Nginx Container</span>
+                    </div>
+
+                    <b>&rarr;</b>
+
+                    <div>
+                        <strong>Backend</strong>
+                        <span>Flask Container</span>
+                    </div>
+
+                    <b>&rarr;</b>
+
+                    <div>
+                        <strong>SQLite</strong>
+                        <span>Docker Volume</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- EVENT REGISTRATION DIALOG -->
+    <dialog id="registrationDialog">
+        <form id="registrationForm">
+            <div class="dialog-header">
+                <div>
+                    <p class="small-heading">
+                        EVENT REGISTRATION
+                    </p>
+
+                    <h2 id="registrationEventTitle">
+                        Register for Event
+                    </h2>
+                </div>
+
+                <button
+                    type="button"
+                    id="closeDialog"
+                    class="close-button"
+                    aria-label="Close registration form"
+                >
+                    &times;
+                </button>
+            </div>
+
+            <input
+                type="hidden"
+                id="registrationEventId"
+            >
+
+            <label for="studentName">
+                Student Name
+
+                <input
+                    id="studentName"
+                    required
+                    autocomplete="name"
+                    placeholder="Enter student name"
+                >
+            </label>
+
+            <label for="rollNumber">
+                Roll Number
+
+                <input
+                    id="rollNumber"
+                    required
+                    placeholder="Example: CE001"
+                >
+            </label>
+
+            <label for="studentEmail">
+                Email Address
+
+                <input
+                    id="studentEmail"
+                    type="email"
+                    required
+                    autocomplete="email"
+                    placeholder="student@example.com"
+                >
+            </label>
+
+            <div class="dialog-buttons">
+                <button
+                    type="button"
+                    id="cancelRegistrationDialog"
+                    class="secondary-button"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Confirm Registration
+                </button>
+            </div>
+        </form>
+    </dialog>
+
+    <script src="script.js"></script>
+</body>
+</html>

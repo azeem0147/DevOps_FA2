@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  namespace: campus-fa2
+data:
+  APP_NAME: "Campus Event Management System"
+  APP_ENV: "FA2-KUBERNETES"
+  APP_VERSION: "2.0.0"
+  LOG_LEVEL: "INFO"
+  DATABASE_PATH: "/app/data/campus_events.db"
